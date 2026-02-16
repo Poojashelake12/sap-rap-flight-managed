@@ -1,0 +1,38 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'travel projection view'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity ZC_TRAVEL_TECH_M4
+provider contract transactional_query
+as projection on ZI_TRAVEL_TECH_M4
+
+{
+    key TravelId,
+    @ObjectModel.text.element: [ 'agency_name' ]
+    AgencyId,
+    _agency.Name as agency_name,
+    @ObjectModel.text.element: [ 'customerName' ]
+    CustomerId,
+    _customer.LastName as customerName, 
+    BeginDate,
+    EndDate,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
+    BookingFee,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
+    TotalPrice,
+    CurrencyCode,
+    Description,
+    @ObjectModel.text.element: [ 'OverAllStatusText' ]  
+    OverallStatus,
+    _STATUS._Text.Text as OverAllStatusText :localized,
+//    CreatedBy,
+//    CreatedAt,
+//    LastChangedBy,
+    LastChangedAt,
+    /* Associations */
+    _agency,
+    _Booking: redirected to composition child ZC_BOOKING_TECH_M4,
+    _currency,
+    _customer,
+    _STATUS
+}
