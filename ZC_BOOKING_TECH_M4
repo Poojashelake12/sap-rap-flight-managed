@@ -1,0 +1,33 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'booking projection view'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define view entity ZC_BOOKING_TECH_M4 as projection on ZI_BOOKING_TECH_M4
+{   
+   
+    key TravelId,
+    key BookingId,
+    BookingDate,
+     @ObjectModel.text.element: [ 'CustomerName' ]
+    CustomerId,
+    _customer.LastName as CustomerName,
+    @ObjectModel.text.element: [ 'CarrierName' ]
+    CarrierId,
+    _carrier.Name as CarrierName,
+    ConnectionId,
+    FlightDate,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
+    FlightPrice,
+    CurrencyCode,
+    @ObjectModel.text.element: [ 'bookingStatusText' ]
+    BookingStatus,
+   _status._Text.Text as bookingStatusText : localized,
+    LastChangedAt,
+    /* Associations */
+    _BookingSupp1: redirected to composition child ZC_BOOKSPL_TECH_M4,
+    _carrier,
+    _connection,
+    _customer,
+    _status,
+    _travel: redirected to parent ZC_TRAVEL_TECH_M4
+}
