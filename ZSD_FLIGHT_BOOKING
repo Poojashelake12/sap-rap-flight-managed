@@ -1,0 +1,6 @@
+@EndUserText.label: 'service defination for travel demo'
+define service ZSD_FLIGHT_BOOKING {
+  expose ZC_TRAVEL_TECH_M4;
+  expose ZC_BOOKING_TECH_M4;
+  expose ZC_BOOKSPL_TECH_M4;
+}
