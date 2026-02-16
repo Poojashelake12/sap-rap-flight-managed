@@ -1,0 +1,25 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'booking suppliment travel table'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define view entity ZC_BOOKSPL_TECH_M4 as projection on ZI_BOOKSPL_TECH_M4
+{
+    key TravelId,
+    key BookingId,
+    key BookingSupplementId,
+    @ObjectModel.text.element: [ 'supplementDes' ]
+    SupplementId,
+    _SupplementText.Description as supplementDes:localized,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
+    Price,
+    CurrencyCode,
+    LastChangedAt,
+    /* Associations */
+    _Booking: redirected to parent ZC_BOOKING_TECH_M4,
+    _Supplement,
+    _SupplementText,
+    _travel : redirected to ZC_TRAVEL_TECH_M4
+}
+    
+
+   
