@@ -1,0 +1,68 @@
+CLASS ztravel_data DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+CLASS ztravel_data IMPLEMENTATION.
+
+  METHOD if_oo_adt_classrun~main.
+
+  DELETE from ZTRAVEL_TECH_M4.
+  DELETE from ZBOOKING_TECH_M4.
+  DELETE from ZBOOKSPL_TECH_M4.
+
+   " insert travel demo data
+
+    INSERT  ZTRAVEL_TECH_M4 FROM (
+
+        SELECT *
+
+          FROM /dmo/travel_m
+
+      ).
+
+    COMMIT WORK.
+
+    " insert booking demo data
+
+    INSERT ZBOOKING_TECH_M4 FROM (
+
+        SELECT *
+
+          FROM   /dmo/booking_m
+
+*            JOIN ztravel_tech_m AS z
+
+*            ON   booking~travel_id = z~travel_id
+
+
+
+      ).
+
+    COMMIT WORK.
+
+    INSERT ZBOOKSPL_TECH_M4 FROM (
+
+        SELECT *
+
+          FROM   /dmo/booksuppl_m
+
+*            JOIN ztravel_tech_m AS z
+
+*            ON   booking~travel_id = z~travel_id
+
+      ).
+
+    COMMIT WORK.
+
+    out->write( 'Travel and booking demo data inserted.').
+
+  ENDMETHOD.
+ENDCLASS.
