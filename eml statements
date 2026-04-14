@@ -1,0 +1,168 @@
+CLASS z_eml_statement DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS z_eml_statement IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+* 1.read   --> it will return only travelId
+*  read ENTITIES OF ZI_TRAVEL_TECH_M4
+*  ENTITY ZI_TRAVEL_TECH_M4
+*  from value #( ( TravelId = '15' ) )
+*  result data(it_data).
+*
+*  out->write( it_data ).
+
+
+* 2. it will return fields which we are passing
+*  read ENTITIES OF ZI_TRAVEL_TECH_M4
+*  entity Travel
+*  fields ( TravelId AGENCYID CUSTOMERID  )
+*  with Value #( ( TravelId = '15' ) )
+*  result Data(it_data).
+*
+*  out->write( it_data ).
+
+*  3. it will return all the fields
+
+*    READ ENTITIES OF ZI_TRAVEL_TECH_M4
+*    ENTITY Travel
+*    ALL FIELDS
+*    with value #( ( TravelId = '15' ) )
+*    RESULT data(it_data).
+*
+*    out->write( it_data ).
+
+
+* 4.read by association(rba)  read data child entity data from the key of parent entity
+
+*    read ENTITIES OF ZI_TRAVEL_TECH_M4
+*    ENTITY Travel by \_Booking
+*    ALL FIELDS
+*    WITH value #( ( TravelId = '15' ) )
+*    RESULT data(it_data).
+*
+*    out->write( it_data ).
+
+* 5. READ THE DATA FROM THE MULTIPLE ENTITY AT THE SAME TIME  READ DATA OF PARENT ENTITY AND CHILD ENTITY AT SAME TIME.
+
+*    READ ENTITIES OF ZI_TRAVEL_TECH_M4
+*    ENTITY Travel
+*    ALL FIELDS
+*    WITH VALUE #( ( TravelId = '15' ) )
+*    RESULT DATA(IT_TRAVEL)
+*    ENTITY Travel BY \_Booking
+*    ALL FIELDS
+*    WITH VALUE #( ( TravelId = '15' ) )
+*    RESULT DATA(IT_BOOKING).
+*
+*    OUT->write( it_travel ).
+*    OUT->write( it_booking ).
+
+
+*  For failed data (by  passing wrong data).    result and reported structure is blank
+
+*   READ ENTITIES OF ZI_TRAVEL_TECH_M4
+*   ENTITY Travel
+*   ALL FIELDS
+*   WITH VALUE #( ( TravelId = '5000' ) )
+*   RESULT DATA(IT_TRAVEL)
+*   FAILED DATA(IT_FAILED)
+*   REPORTED DATA(IT_REPORTED).
+*
+*   OUT->write( it_travel ).
+*   OUT->write( it_failed ).
+*   OUT->write( it_reported ).
+
+
+*   modify update
+
+*   MODIFY ENTITIES OF ZI_TRAVEL_TECH_M4
+*   ENTITY Travel
+*   UPDATE
+*      SET FIELDS
+*      WITH VALUE #( ( TravelId = '00000019'
+*                      DESCRIPTION = 'updated vacation'
+*                   ) )
+*      failed data(it_failed)
+*      reported data(it_reported).
+*
+*      out->write( 'update successfully' ).
+*
+*      COMMIT ENTITIES
+*         RESPONSE OF ZI_TRAVEL_TECH_M4
+*         FAILED data(lv_commit_failed)
+*         REPORTED data(lv_commit_reported).
+*
+*
+*         out->write( lv_commit_failed ).
+*
+
+*************************** modify create**********************
+
+*    MODIFY ENTITIES OF ZI_TRAVEL_TECH_M4
+*    ENTITY Travel
+*    create
+*     set FIELDS
+*     with value #( ( %cid = 'T001'
+*                     TRAVELID = '5001'
+*                     AgencyId = '070002'
+*                     CustomerId = '000094'
+*                     BeginDate = cl_abap_context_info=>get_system_date( )
+*                     EndDate = cl_abap_context_info=>get_system_date( ) + 5
+*                     Description = 'My new vacation'  ) )
+*
+*                 MAPPED data(lv_mapped)
+*                 FAILED data(lv_failed)
+*                 REPORTED data(lv_reported).
+*
+*               out->write( 'Create Successful' ).
+*               out->write( lv_mapped-travel ).
+*               out->write( lv_failed-travel ).
+
+*
+*              COMMIT ENTITIES
+*                 RESPONSE OF ZI_TRAVEL_TECH_M4
+*                 FAILED data(it_failed)
+*                 REPORTED data(it_reported).
+
+
+
+*************************** modify delete**********************
+
+     MODIFY ENTITIES OF ZI_TRAVEL_TECH_M4
+     ENTITY Travel
+     DELETE
+     from VALUE #( ( TRAVELID = '5001' ) )
+     FAILED data(lv_failed)
+     REPORTED data(lv_reported).
+
+     out->write( 'deleted successfully' ).
+
+    COMMIT ENTITIES
+    RESPONSE OF ZI_TRAVEL_TECH_M4
+    FAILED data(it_failed)
+    REPORTED data(it_reported).
+
+
+
+
+
+
+
+
+
+  ENDMETHOD.
+ENDCLASS.
